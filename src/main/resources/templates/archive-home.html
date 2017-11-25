@@ -1,0 +1,26 @@
+{{>common/header}}
+<h2>Files</h2>
+
+<p>Media: {{targetDir}}</p>
+<p>Total files: {{total-files}}</p>
+<div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Last Modified</th>
+            <th>Size</th>
+            <th>Path</th>
+        </tr>
+        {{#media}}
+        <tr>
+            <td>{{0}}</td>
+            <td>{{1}}</td>
+            <td>{{2}}</td>
+            <td>{{3}}</td>
+        </tr>
+        {{/media}}
+    </table>
+</div>
+
+</body>
+</html>
