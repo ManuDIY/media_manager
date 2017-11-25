@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface AlbumDao extends JpaRepository<Album, Long> {
+public interface AlbumArtistDao extends JpaRepository<Song, Long> {
 
     public Song findByArtistId(int artistId);
 

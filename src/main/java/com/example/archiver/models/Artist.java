@@ -17,7 +17,7 @@ public class Artist {
 
     public Artist(String name) {
         this.name = name;
-    };
+    }
 
     public Artist(String name, String bio) {
         this.name = name;

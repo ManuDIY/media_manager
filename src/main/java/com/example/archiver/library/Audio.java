@@ -1,5 +1,9 @@
 package com.example.archiver.library;
 
+import com.example.archiver.models.Song;
+import com.example.archiver.models.SongDao;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Audio {
     private String artist;
     private String title;
@@ -14,6 +18,8 @@ public class Audio {
     private int bitrate;
     private int channels;
     private int filesize;
+
+    public Audio() {}
 
     public Audio(String artist, String title, String album, int year,
                  int disc, int track, String comment, int rawLength,
@@ -34,7 +40,39 @@ public class Audio {
         this.filesize = filesize;
     }
 
+    public String AddTrack(int track,
+                           String title,
+                           String artist,
+                           String albumArtist,
+                           String album,
+                           int year,
+                           int rawLength,
+                           int bitrate,
+                           int sampleRate,
+                           int channels,
+                           String filePath
+                           )
+    {
+
+        String songId = "";
+        String albumId = "";
+        try
+        {
+            Song song = new Song(title, artist, albumArtist, album, year, rawLength, bitrate, sampleRate, channels, filePath);
+            songDao.save(song);
+            songId = String.valueOf(song.getId());
+
+        } catch (Exception ex) {
+            return "Error creating the user: " + ex.getMessage();
+        }
+        return "Song successfully created with id = " + songId;
+
+    }
+
     private void readId3Tag() {
 
     }
+
+    @Autowired
+    private SongDao songDao;
 }

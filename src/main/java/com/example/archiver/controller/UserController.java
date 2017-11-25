@@ -23,7 +23,7 @@ public class UserController {
             userId = String.valueOf(user.getId());
         }
         catch (Exception ex) {
-            return "Error creating the user: " + ex.getMessage();
+            return "Error creating the user: " + ex.getMessage().toString();
         }
         return "User successfully created with id = " + userId;
     }

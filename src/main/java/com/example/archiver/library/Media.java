@@ -3,6 +3,7 @@ package com.example.archiver.library;
 import com.example.archiver.component.ScheduledTasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class Media {
 
     private List<String[]> results = new ArrayList<>();
@@ -120,9 +122,25 @@ public class Media {
             meta[2] = Long.toString(f.length());
             meta[3] = f.getAbsolutePath();
 
+            int track = 0;
+            String title = "title";
+            String artist = "artist";
+            String albumArtist = "albumArtist";
+            String album = "album";
+            int year = 1900;
+            int rawLength = 0;
+            int bitrate = 0;
+            int sampleRate = 0;
+            int channels = 0;
+            String filePath = f.getAbsolutePath();
+
             log.info("Adding " + this.contentType + " file: " + f.getName());
 
             this.results.add(meta);
+
+            Audio audio = new Audio();
+
+            audio.AddTrack(track,title,artist,albumArtist,album,year,rawLength,bitrate,sampleRate,channels,filePath);
         }
     }
 }

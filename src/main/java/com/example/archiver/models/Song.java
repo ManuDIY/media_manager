@@ -13,22 +13,22 @@ public class Song {
     private long id;
 
     @NotNull
-    private String title, composer, producer, comment, filepath, genre;
+    private String title, filePath, genre;
 
     @NotNull
     private int track;
 
     @NotNull
-    @Column(name = "artist_id")
-    private int artistId;
+    @Column(name = "artist")
+    private String artist;
 
     @NotNull
-    @Column(name = "album_id")
-    private int albumId;
+    @Column(name = "album")
+    private String album;
 
     @NotNull
-    @Column(name = "album_artist_id")
-    private int albumArtistId;
+    @Column(name = "album_artist")
+    private String albumArtist;
 
     @NotNull
     @Column(name = "sample_rate")
@@ -44,27 +44,24 @@ public class Song {
     public Song() {
     }
 
-    public Song(long id) {
-        this.id = id;
+    public Song(String title, String artist, String albumArtist, String album,
+                int year, int rawLength, int bitrate, int sampleRate, int channels, String filePath)
+    {
+        this.title = title;
+        this.artist = artist;
+        this.albumArtist = albumArtist;
+        this.album = album;
+        this.year = year;
+        this.rawLength = rawLength;
+        this.bitrate = bitrate;
+        this.sampleRate = sampleRate;
+        this.channels = channels;
+        this.filePath = filePath;
     }
 
-    public Song(String title, int track, String composer, String producer, String comment, String filepath, String genre, int artistId, int albumId, int albumArtistId, int sampleRate, int rawLength, int year, int channels, int bitrate, int filesize) {
-        this.title = title;
-        this.track = track;
-        this.composer = composer;
-        this.producer = producer;
-        this.comment = comment;
-        this.filepath = filepath;
-        this.genre = genre;
-        this.artistId = artistId;
-        this.albumId = albumId;
-        this.albumArtistId = albumArtistId;
-        this.sampleRate = sampleRate;
-        this.rawLength = rawLength;
-        this.year = year;
-        this.channels = channels;
-        this.bitrate = bitrate;
-        this.filesize = filesize;
+    public long getId()
+    {
+        return id;
     }
 
 }
