@@ -2,8 +2,15 @@ package com.example.archiver.library;
 
 import com.example.archiver.models.Song;
 import com.example.archiver.models.SongDao;
+import org.hibernate.tool.schema.extract.spi.ExtractionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Audio {
     private String artist;
     private String title;
@@ -19,28 +26,44 @@ public class Audio {
     private int channels;
     private int filesize;
 
+    private static final Logger log = LoggerFactory.getLogger(Audio.class);
+
     public Audio() {}
 
-    public Audio(String artist, String title, String album, int year,
-                 int disc, int track, String comment, int rawLength,
-                 String length, int sampleRate, int bitrate, int channels,
-                 int filesize) {
-        this.artist = artist;
+    public Audio(String title, String artist) {
         this.title = title;
-        this.album = album;
-        this.year = year;
-        this.disc = disc;
-        this.track = track;
-        this.comment = comment;
-        this.rawLength = rawLength;
-        this.length = length;
-        this.sampleRate = sampleRate;
-        this.bitrate = bitrate;
-        this.channels = channels;
-        this.filesize = filesize;
+        this.artist = artist;
+        try {
+            Song song = new Song(title.trim(), artist.trim());
+            songDao.save(song);
+        } catch (DataAccessResourceFailureException ex) {
+            log.error("AA Error creating song (" + title + " - " + artist + "): " + ex.getMessage());
+        } catch (DataAccessException ex) {
+            log.error("BB Error creating song (" + title + " - " + artist + "): " + ex.getMessage());
+        } catch (Exception ex) {
+            log.error("CC Error creating song (" + title + " - " + artist + "): " + ex.getMessage());
+            //return "Error creating the song: " + ex.getMessage();
+        }
+        log.error("Song successfully created with ID:");
+        //return "Song successfully created with id";
     }
 
-    public String AddTrack(int track,
+    public String addTrack(String title, String artist ) {
+        String songId = "1";
+        try
+        {
+            Song song = new Song(title, artist);
+            songDao.save(song);
+        } catch (Exception ex) {
+            log.error("Error creating song (" + title + " - " + artist + "): " + ex.getMessage());
+            return "Error creating the song: " + ex.getMessage();
+        }
+        log.error("Song successfully created with ID: " + songId);
+        return "Song successfully created with id = " + songId;
+    }
+
+    /*
+    public String addTrack(int track,
                            String title,
                            String artist,
                            String albumArtist,
@@ -54,24 +77,24 @@ public class Audio {
                            )
     {
 
-        String songId = "";
-        String albumId = "";
+        String songId = "1";
         try
         {
-            Song song = new Song(title, artist, albumArtist, album, year, rawLength, bitrate, sampleRate, channels, filePath);
+            Song song = new Song(title, artist, albumArtist, album, year, track, rawLength, bitrate, sampleRate, channels, filePath);
             songDao.save(song);
-            songId = String.valueOf(song.getId());
+            // songId = String.valueOf(song.getId());
+            //log.info("Added song! " + songId);
 
         } catch (Exception ex) {
-            return "Error creating the user: " + ex.getMessage();
+            log.error("Error creating song (" + title + " - " + artist + "): " + ex.getMessage());
+            return "Error creating the song: " + ex.getMessage();
         }
+        log.error("Song successfully created with ID: " + songId);
         return "Song successfully created with id = " + songId;
 
     }
+    */
 
-    private void readId3Tag() {
-
-    }
 
     @Autowired
     private SongDao songDao;

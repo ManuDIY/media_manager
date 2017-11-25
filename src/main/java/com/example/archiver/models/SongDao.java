@@ -9,9 +9,7 @@ import java.util.List;
 @Transactional
 public interface SongDao extends JpaRepository<Song, Long> {
 
-    public Song findByArtistId(int artistId);
-
-    public Song findByAlbumArtistId(int albumArtistId);
+    public Song findByArtist(String artist);
 
     @Query(value="SELECT sum(s.raw_length) FROM songs s", nativeQuery = true)
     public List<Song> calcAllRawLength();

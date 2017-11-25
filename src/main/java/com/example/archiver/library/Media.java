@@ -1,6 +1,9 @@
 package com.example.archiver.library;
 
 import com.example.archiver.component.ScheduledTasks;
+import com.example.archiver.models.SongDao;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -122,25 +125,40 @@ public class Media {
             meta[2] = Long.toString(f.length());
             meta[3] = f.getAbsolutePath();
 
-            int track = 0;
-            String title = "title";
-            String artist = "artist";
-            String albumArtist = "albumArtist";
-            String album = "album";
-            int year = 1900;
-            int rawLength = 0;
-            int bitrate = 0;
-            int sampleRate = 0;
-            int channels = 0;
             String filePath = f.getAbsolutePath();
-
-            log.info("Adding " + this.contentType + " file: " + f.getName());
 
             this.results.add(meta);
 
-            Audio audio = new Audio();
+            /**
+            File file = path.toAbsolutePath().toFile();
 
-            audio.AddTrack(track,title,artist,albumArtist,album,year,rawLength,bitrate,sampleRate,channels,filePath);
+            try {
+                org.jaudiotagger.audio.AudioFile track = AudioFileIO.read(file.getAbsoluteFile());
+
+                int trackNum        = Integer.parseInt(track.getTag().getFirst(FieldKey.TRACK));
+                String title        = track.getTag().getFirst(FieldKey.TITLE);
+                String artist       = track.getTag().getFirst(FieldKey.ARTIST);
+                String albumArtist  = "albumArtist";
+                String album        = track.getTag().getFirst(FieldKey.ALBUM);
+                int year            = Integer.parseInt(track.getTag().getFirst(FieldKey.YEAR));
+                int rawLength       = track.getAudioHeader().getTrackLength();
+                int bitrate         = Integer.parseInt(track.getAudioHeader().getBitRate());
+                int sampleRate      = Integer.parseInt(track.getAudioHeader().getSampleRate());
+                int channels        = Integer.parseInt(track.getAudioHeader().getChannels());
+
+                //Audio audio = new Audio();
+                // audio.AddTrack(trackNum, title, artist, albumArtist, album, year, rawLength, bitrate, sampleRate, channels, filePath);
+                //audio.addTrack(title, artist);
+                Audio audio = new Audio(title, artist);
+
+                log.info("Added: " + title + " - " + artist + " - " + album + " --- " + filePath);
+
+            } catch (IOException e) {
+                log.info(e.toString());
+            } catch (Exception e) {
+                log.info(e.toString());
+            }
+             */
         }
     }
 }
